@@ -1,22 +1,25 @@
 import React from "react";
-import { QueryClient, QueryClientProvider, useQuery } from "react-query";
-import axios from "axios";
+import { useQuery } from "react-query";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { Home } from "./pages/Home";
+
+// async function fetchPosts() {
+//   const { data } = await axios.get('https://jsonplaceholder.typicode.com/posts') return data }
 
 function App() {
-  const queryInfo = useQuery("pokemon", () =>
-    axios
-      .get("https://pokeapi.co/api/v2/pokemon")
-      .then((res) => res.data.results)
-  );
+  const client = new QueryClient();
 
   return (
-    <div>
-      <QueryClientProvider>
-        {queryInfo.data?.map((result) => {
-          return <div key={result.name}>{result.name}</div>;
-        })}
+    <>
+      <QueryClientProvider client={client}>
+        <Router>
+          <Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </Router>
       </QueryClientProvider>
-    </div>
+    </>
   );
 }
 
